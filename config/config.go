@@ -1,8 +1,9 @@
-package hf_provisioner_shared
+package config
 
 import (
 	"github.com/acorn-io/baaah/pkg/router"
 	v1 "github.com/hobbyfarm/gargantua/pkg/apis/hobbyfarm.io/v1"
+	"github.com/hobbyfarm/hf-provisioner-shared"
 	"github.com/sirupsen/logrus"
 	kclient "sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -10,7 +11,7 @@ import (
 func ResolveConfigItemName(vmName string, req router.Request, item string) string {
 	machine := &v1.VirtualMachine{}
 	err := req.Client.Get(req.Ctx, kclient.ObjectKey{
-		Namespace: ResolveNamespace(),
+		Namespace: hf_provisioner_shared.ResolveNamespace(),
 		Name:      vmName,
 	}, machine)
 	if err != nil {

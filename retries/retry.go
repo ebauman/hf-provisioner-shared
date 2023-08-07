@@ -1,4 +1,4 @@
-package hf_provisioner_shared
+package retries
 
 import (
 	"fmt"
