@@ -8,7 +8,7 @@ import (
 
 // RouteAdder is a function implemented by a provider to register
 // Baaah routes for controller operation
-type RouteAdder func(router *router.Router) error
+type RouteAdder func(router router.RouteBuilder) error
 
 // SchemeAdder is a function implemented by a provider to register
 // types to a runtime scheme.
