@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"github.com/acorn-io/baaah/pkg/log"
 	"github.com/acorn-io/baaah/pkg/router"
 	"github.com/ebauman/crder"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -8,7 +9,7 @@ import (
 
 // RouteAdder is a function implemented by a provider to register
 // Baaah routes for controller operation
-type RouteAdder func(router router.RouteBuilder) error
+type RouteAdder func(router *router.Router) error
 
 // SchemeAdder is a function implemented by a provider to register
 // types to a runtime scheme.
@@ -33,4 +34,7 @@ type Provider interface {
 
 	// CRDs returns a slice of CRD definitions to be installed by the controller
 	CRDs() []crder.CRD
+
+	// Logger returns the standard logger to be used for this controller
+	Logger() log.Logger
 }

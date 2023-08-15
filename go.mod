@@ -16,6 +16,7 @@ require (
 	github.com/hobbyfarm/gargantua v1.0.0
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/crypto v0.0.0-20220315160706-3147a52a75dd
+	k8s.io/api v0.27.2
 	k8s.io/apimachinery v0.27.2
 	k8s.io/client-go v11.0.1-0.20190409021438-1a26190bd76a+incompatible
 	sigs.k8s.io/controller-runtime v0.15.0-beta.0
@@ -59,7 +60,6 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.27.2 // indirect
 	k8s.io/apiextensions-apiserver v0.25.2 // indirect
 	k8s.io/klog/v2 v2.90.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20230501164219-8b0f38b5fd1f // indirect

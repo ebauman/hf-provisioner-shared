@@ -3,14 +3,13 @@ package controller
 import (
 	"context"
 	"github.com/acorn-io/baaah"
+	"github.com/acorn-io/baaah/pkg/log"
 	"github.com/acorn-io/baaah/pkg/restconfig"
 	"github.com/acorn-io/baaah/pkg/router"
 	"github.com/ebauman/crder"
-	v1 "github.com/hobbyfarm/gargantua/pkg/apis/hobbyfarm.io/v1"
-	labels2 "github.com/hobbyfarm/hf-provisioner-shared/labels"
 	namespace "github.com/hobbyfarm/hf-provisioner-shared/namespace"
 	"github.com/hobbyfarm/hf-provisioner-shared/provider"
-	"k8s.io/apimachinery/pkg/labels"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/rest"
@@ -36,28 +35,34 @@ func NewController(provider provider.Provider) (*Controller, error) {
 		utilruntime.Must(ra(scheme))
 	}
 
+	// give everything corev1 at least
+	utilruntime.Must(corev1.AddToScheme(scheme))
+
 	baseRouter, err := baaah.NewRouter(provider.Name(), &baaah.Options{
 		Scheme:            scheme,
 		DefaultRESTConfig: cfg,
 		DefaultNamespace:  namespace.ResolveNamespace(),
 	})
 
-	providerRouter := registerProviderRouter(baseRouter, namespace.ResolveNamespace(), provider.Name())
-
 	if err != nil {
 		return nil, err
 	}
 
 	for _, ra := range provider.RouteAdders() {
-		if err := ra(providerRouter); err != nil {
+		if err := ra(baseRouter); err != nil {
 			return nil, err
 		}
+	}
+
+	if provider.Logger() != nil {
+		log.SetLogger(provider.Logger())
 	}
 
 	return &Controller{
 		Router:     baseRouter,
 		Scheme:     scheme,
 		restconfig: cfg,
+		Provider:   provider,
 	}, nil
 }
 
@@ -69,10 +74,4 @@ func (c *Controller) Start(ctx context.Context) error {
 	}
 
 	return c.Router.Start(ctx)
-}
-
-func registerProviderRouter(router *router.Router, ns string, providerName string) router.RouteBuilder {
-	return router.Type(&v1.VirtualMachine{}).Namespace(ns).Selector(labels.SelectorFromSet(map[string]string{
-		labels2.ProvisionerLabel: providerName,
-	}))
 }
