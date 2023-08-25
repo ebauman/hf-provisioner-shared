@@ -71,7 +71,9 @@ func SecretHandler(req router.Request, resp router.Response) error {
 
 	secret.Labels[labels2.VirtualMachineLabel] = vm.Name
 	secret.Namespace = vm.Namespace
-	secret.Data["password"] = []byte(config.ResolveConfigItem(vm, req, "password"))
+	if password, err := config.ResolveConfigItem(vm, req, "password"); err == nil {
+		secret.Data["password"] = []byte(password)
+	}
 
 	resp.Objects(secret)
 
