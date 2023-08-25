@@ -2,21 +2,44 @@ package errors
 
 import "fmt"
 
-type NotFoundError struct {
+type ErrorType string
+
+var (
+	ErrorTypeNotFound ErrorType = "not_found"
+)
+
+type Error struct {
 	message string
+	eType   ErrorType
 }
 
-func NewNotFoundError(msg string, args ...any) NotFoundError {
-	return NotFoundError{
-		message: fmt.Sprintf(msg, args...),
+func NewError(t ErrorType, message string, args ...any) *Error {
+	return &Error{
+		message: fmt.Sprintf(message, args...),
+		eType:   t,
 	}
 }
 
-func (n NotFoundError) Error() string {
-	return n.message
+func NewNotFoundError(message string, args ...any) *Error {
+	return NewError(ErrorTypeNotFound, message, args...)
+}
+
+func (e Error) Error() string {
+	return fmt.Sprintf("%s: %s", e.eType, e.message)
 }
 
 func IsNotFound(err error) bool {
-	_, ok := err.(NotFoundError)
-	return ok
+	return errIs(err, ErrorTypeNotFound)
+}
+
+func errIs(err error, t ErrorType) bool {
+	if err == nil {
+		return false
+	}
+
+	if e, ok := err.(*Error); ok {
+		return e.eType == t
+	}
+
+	return false
 }
