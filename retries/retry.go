@@ -2,7 +2,7 @@ package retries
 
 import (
 	"fmt"
-	"github.com/sirupsen/logrus"
+	"github.com/acorn-io/baaah/pkg/log"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/json"
 	"time"
@@ -76,7 +76,7 @@ func (r GenericRetry) ExceededRetries(obj Retrier) (exceeded bool, ok bool) {
 	retryInstance, err := findOrCreateRetry(obj, r)
 
 	if err != nil {
-		logrus.Errorf("error executing exceededretries: %w", err)
+		log.Errorf("error executing exceededretries: %s", err)
 		return false, false
 	}
 
@@ -91,7 +91,7 @@ func (r GenericRetry) CanRetry(obj Retrier) bool {
 	// does this retry exist on the object?
 	retryInstance, err := findOrCreateRetry(obj, r)
 	if err != nil {
-		logrus.Errorf("error executing canretry: %w", err)
+		log.Errorf("error executing canretry: %s", err)
 		return false
 	}
 
