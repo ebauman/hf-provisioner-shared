@@ -5,7 +5,6 @@ go 1.21
 toolchain go1.21.3
 
 replace (
-	github.com/ebauman/crder => github.com/ebauman/crder v0.2.0-rc0
 	k8s.io/api => k8s.io/api v0.29.0
 	k8s.io/apimachinery => k8s.io/apimachinery v0.29.0
 	k8s.io/client-go => k8s.io/client-go v0.29.0
@@ -14,7 +13,7 @@ replace (
 
 require (
 	github.com/acorn-io/baaah v0.0.0-20240205174747-9cd5fb2d3e41
-	github.com/ebauman/crder v0.0.0-00010101000000-000000000000
+	github.com/ebauman/crder v0.2.0-rc0
 	github.com/hobbyfarm/gargantua v1.0.0
 	golang.org/x/crypto v0.14.0
 	k8s.io/api v0.29.0
