@@ -16,7 +16,7 @@ func GetInstanceId(ctx context.Context, kclient client.Client) (string, error) {
 	cfg := &v1.ConfigMap{}
 
 	err := kclient.Get(ctx, client.ObjectKey{
-		Name:      "instance-id",
+		Name:      "hobbyfarm-instance-id",
 		Namespace: namespace.ResolveNamespace(),
 	}, cfg)
 	if err != nil {
