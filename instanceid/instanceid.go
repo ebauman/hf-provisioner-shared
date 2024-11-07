@@ -19,7 +19,7 @@ const (
 // GetOrCreateInstanceId attempts first to get an existing hobbyfarm instance id.
 // If one does not exist it creates it, stores it, and returns the value.
 func GetOrCreateInstanceId(ctx context.Context, kclient client.Client) (string, error) {
-	id, err := GetOrCreateInstanceId(ctx, kclient)
+	id, err := GetInstanceId(ctx, kclient)
 	if err != nil {
 		if !errors.IsNotFound(err) {
 			return "", err
