@@ -3,9 +3,9 @@ package instanceid
 import (
 	"context"
 	"fmt"
-	"github.com/hobbyfarm/hf-provisioner-shared/errors"
 	"github.com/hobbyfarm/hf-provisioner-shared/namespace"
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	v12 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/uuid"
 	"sigs.k8s.io/controller-runtime/pkg/client"
